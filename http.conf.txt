@@ -1,0 +1,25 @@
+server
+{
+    listen 80;
+    include vhost/域名.txt;
+    access_log  logs/access.log access; 
+    index index.php index.html index.htm default.php default.htm default.html;
+           
+            location  /mobile {
+                 root /data/web/mobile;
+                 try_files $uri $uri/ /index.html;
+                }  
+
+            location  /info {
+                 root /data/web/info;
+                 try_files $uri $uri/ /index.html;
+                }
+            location  / {
+                  if ($http_user_agent ~* "(mobile|nokia|iphone|ipad|android|samsung|htc|blackberry)") {
+                    root /data/mobile;
+                    break;
+                    }
+            root /data/pc;
+            try_files $uri $uri/ /index.html;
+            }
+}
